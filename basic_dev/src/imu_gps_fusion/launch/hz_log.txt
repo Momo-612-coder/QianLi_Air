@@ -1,0 +1,5 @@
+subscribed to [/airsim_node/drone_1/imu/imu]
+average rate: 100.013
+	min: 0.004s max: 0.016s std dev: 0.00102s window: 99
+average rate: 100.000
+	min: 0.004s max: 0.016s std dev: 0.00098s window: 106

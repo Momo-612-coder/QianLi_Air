@@ -1,0 +1,106 @@
+%YAML:1.0
+
+#--------------------------------------------------------------------------------------------
+# Camera Parameters  (AirSim stereo front camera, 960x480, 60-deg FOV)
+# Left  cam: fx=833.8  fy=835.27 cx=481.6  cy=360.766
+# Right cam: fx=832.287 fy=833.94 cx=481.66 cy=359.45
+# Baseline: 0.301922 m
+#--------------------------------------------------------------------------------------------
+Camera.type: "PinHole"
+
+# Left camera intrinsics
+Camera1.fx: 833.8
+Camera1.fy: 835.27
+Camera1.cx: 481.6
+Camera1.cy: 360.766
+
+# Left camera distortion  (RadTan k1 k2 p1 p2)
+Camera1.k1: -0.00170596
+Camera1.k2: -0.00124899
+Camera1.p1:  0.00007559
+Camera1.p2: -0.00017225
+
+# Right camera intrinsics
+Camera2.fx: 832.287
+Camera2.fy: 833.94
+Camera2.cx: 481.66
+Camera2.cy: 359.45
+
+# Right camera distortion
+Camera2.k1: -0.00567839
+Camera2.k2:  0.01405329
+Camera2.p1:  0.00025239
+Camera2.p2: -0.00037066
+
+# Camera resolution
+Camera.width:  960
+Camera.height: 480
+
+# Camera frames per second (AirSim default)
+Camera.fps: 30
+
+# Stereo baseline * fx  (bf = 0.301922 * 833.8 ≈ 251.59)
+Camera.bf: 251.59
+
+# Color order of the images (0: BGR, 1: RGB)
+Camera.RGB: 0
+
+# Close/Far threshold (multiples of bf)
+Camera.ThDepth: 40.0
+
+# Transformation from cam2 (right) to cam1 (left): T_c1_c2
+# [ R | t ]  where t = [baseline, dy, dz]^T  (right → left offset)
+Stereo.T_c1_c2: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: f
+   data: [ 1.0,  0.0,  0.0,  0.301922,
+            0.0,  1.0,  0.0, -0.00150702,
+            0.0,  0.0,  1.0,  0.00211,
+            0.0,  0.0,  0.0,  1.0 ]
+
+#--------------------------------------------------------------------------------------------
+# IMU Parameters  (only needed for IMU_STEREO mode; ignored in STEREO mode)
+# AirSim IMU topic: airsim_node/drone_1/imu/imu
+# Typical AirSim IMU noise figures — tune with real Allan-deviation if needed.
+#--------------------------------------------------------------------------------------------
+IMU.NoiseGyro:     0.004
+IMU.NoiseAcc:      0.04
+IMU.GyroWalk:      0.000022
+IMU.AccWalk:       0.0004
+IMU.Frequency:     200.0
+
+# IMU → Camera1 (left camera) transformation T_cam_imu
+# AirSim: IMU frame is typically aligned with body / NED.
+# Adjust if your vehicle has a different IMU mounting.
+IMU.T_b_acc1: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: f
+   data: [ 1.0, 0.0, 0.0, 0.0,
+            0.0, 1.0, 0.0, 0.0,
+            0.0, 0.0, 1.0, 0.0,
+            0.0, 0.0, 0.0, 1.0 ]
+
+#--------------------------------------------------------------------------------------------
+# ORB Extractor Parameters
+#--------------------------------------------------------------------------------------------
+ORBextractor.nFeatures:   1000
+ORBextractor.scaleFactor: 1.2
+ORBextractor.nLevels:     8
+ORBextractor.iniThFAST:   20
+ORBextractor.minThFAST:   7
+
+#--------------------------------------------------------------------------------------------
+# Viewer Parameters
+#--------------------------------------------------------------------------------------------
+Viewer.KeyFrameSize:        0.05
+Viewer.KeyFrameLineWidth:   1.0
+Viewer.GraphLineWidth:      0.9
+Viewer.PointSize:           2.0
+Viewer.CameraSize:          0.08
+Viewer.CameraLineWidth:     3.0
+Viewer.ViewpointX:          0.0
+Viewer.ViewpointY:         -0.7
+Viewer.ViewpointZ:         -1.8
+Viewer.ViewpointF:          500.0

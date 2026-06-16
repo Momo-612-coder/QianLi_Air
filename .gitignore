@@ -1,0 +1,8 @@
+/basic_dev/build/
+/basic_dev/.vscode/
+/basic_dev/devel/
+/basic_dev/src/Point-LIO/maps/chapter1.pcd
+/basic_dev/src/Point-LIO/maps/scans_v1.pcd
+/basic_dev/src/Point-LIO/maps/scans_v2.pcd
+/basic_dev/test.tar
+PCD

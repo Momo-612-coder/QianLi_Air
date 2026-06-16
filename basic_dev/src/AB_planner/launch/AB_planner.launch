@@ -1,0 +1,166 @@
+<launch>
+  <arg name="enable_sim_time" default="true"/>
+  <arg name="use_rviz" default="false"/>
+
+  <arg name="plan_size_x" default="200.0"/>
+  <arg name="plan_size_y" default="200.0"/>
+  <arg name="plan_size_z" default="100.0"/>
+  <arg name="resolution" default="0.2"/>
+  <arg name="reserved_back_space" default="10.0"/>
+  <arg name="safety_distance" default="0.2"/>
+  <arg name="h_weight" default="1.35"/>
+
+  <arg name="odometry_topic" default="/airsim_node/drone_1/drone_state"/>
+  <arg name="fusion_start_topic" default="/control_start"/>
+  <arg name="obstacle_topic" default="/front_fov_obstacles"/>
+  <arg name="visualization_frame" default="map"/>
+  <arg name="bspline_visualization_samples" default="500"/>
+  <arg name="acc_lpf_alpha" default="0.1"/>
+  <arg name="mpc_command_step" default="10"/>
+  <arg name="convert_ned_to_position_cmd" default="false"/>
+  <arg name="plan_waypoint_lookahead" default="2"/>
+  <arg name="replan_trigger_distance" default="20.0"/>
+  <arg name="planning_failure_retry_interval" default="0.25"/>
+  <arg name="bspline_control_point_spacing" default="2.0"/>
+  <arg name="waypoint_reached_distance" default="8.0"/>
+  <arg name="use_waypoint_yaw" default="true"/>
+  <arg name="max_yaw_rate" default="3.5"/>
+  <arg name="segment_turnaround_enabled" default="true"/>
+  <arg name="segment_turnaround_duration" default="10.0"/>
+  <arg name="segment_turnaround_yaw_delta" default="3.141592653589793"/>
+  <arg name="path_optimization_enabled" default="true"/>
+  <arg name="path_optimization_iterations" default="80"/>
+  <arg name="path_optimization_data_weight" default="0.50"/>
+  <arg name="path_optimization_smooth_weight" default="0.45"/>
+  <arg name="path_optimization_z_smooth_weight" default="0.65"/>
+  <arg name="path_optimization_max_deviation" default="1.0"/>
+  <arg name="path_optimization_max_z_slope" default="0.25"/>
+  <arg name="path_optimization_min_turn_radius" default="6.0"/>
+  <arg name="bspline_collision_check_enabled" default="true"/>
+  <arg name="bspline_collision_sample_step" default="0.3"/>
+  <arg name="bspline_collision_extra_clearance" default="0.1"/>
+  <arg name="dynamic_avoidance_enabled" default="true"/>
+  <arg name="dynamic_avoidance_replan_period" default="0.6"/>
+  <arg name="dynamic_avoidance_obstacle_stale_time" default="0.4"/>
+  <arg name="dynamic_avoidance_obstacle_history_time" default="0.2"/>
+  <arg name="dynamic_avoidance_obstacle_history_max_frames" default="1"/>
+  <arg name="dynamic_avoidance_obstacle_merge_distance" default="1.0"/>
+  <arg name="dynamic_avoidance_immediate_replan_on_collision" default="true"/>
+  <arg name="dynamic_avoidance_min_replan_interval" default="0.4"/>
+  <arg name="dynamic_avoidance_obstacle_inflation" default="0.2"/>
+  <arg name="dynamic_avoidance_endpoint_clear_radius" default="1.5"/>
+  <arg name="dynamic_avoidance_clear_history_on_empty_frame" default="true"/>
+  <arg name="dynamic_avoidance_threat_confirm_frames" default="2"/>
+  <arg name="dynamic_avoidance_threat_clear_frames" default="3"/>
+  <arg name="astar_max_search_nodes" default="100000"/>
+  <arg name="fallback_max_speed" default="10.0"/>
+  <arg name="fallback_max_vertical_speed" default="6.0"/>
+  <arg name="startup_altitude_hold_enabled" default="true"/>
+  <arg name="startup_altitude_hold_distance" default="8.0"/>
+  <arg name="startup_altitude_hold_margin" default="0.3"/>
+  <arg name="planning_recovery_enabled" default="true"/>
+  <arg name="planning_recovery_failure_threshold" default="10"/>
+  <arg name="planning_recovery_step" default="0.2"/>
+  <arg name="planning_recovery_duration" default="1.5"/>
+  <arg name="planning_recovery_reached_distance" default="0.1"/>
+  <arg name="planning_recovery_stuck_speed" default="0.5"/>
+  <arg name="planning_recovery_allow_vertical" default="false"/>
+  <arg name="mpc_N" default="60"/>
+  <arg name="mpc_dt" default="0.02"/>
+  <arg name="mpc_max_jerk" default="20.0"/>
+  <arg name="mpc_max_acc" default="6.0"/>
+  <arg name="mpc_max_vel" default="12.0"/>
+  <arg name="mpc_w_pos" default="50.0"/>
+  <arg name="mpc_w_vel" default="30.0"/>
+  <arg name="mpc_w_terminal_pos" default="50.0"/>
+  <arg name="mpc_w_jerk" default="0.5"/>
+  <arg name="mpc_w_jerk_delta" default="0.05"/>
+  <arg name="mpc_obstacle_constraints_enabled" default="true"/>
+  <arg name="mpc_obstacle_safe_distance" default="0.4"/>
+  <arg name="mpc_obstacle_active_distance" default="12.0"/>
+  <arg name="mpc_obstacle_max_count" default="12"/>
+  <arg name="mpc_obstacle_check_step" default="5"/>
+
+  <param name="/use_sim_time" value="$(arg enable_sim_time)"/>
+
+  <include file="$(find AB_planner)/launch/A_star_params.xml">
+    <arg name="plan_size_x_" value="$(arg plan_size_x)"/>
+    <arg name="plan_size_y_" value="$(arg plan_size_y)"/>
+    <arg name="plan_size_z_" value="$(arg plan_size_z)"/>
+    <arg name="resolution" value="$(arg resolution)"/>
+    <arg name="reserved_back_space" value="$(arg reserved_back_space)"/>
+    <arg name="safety_distance" value="$(arg safety_distance)"/>
+    <arg name="h_weight" value="$(arg h_weight)"/>
+    <arg name="odometry_topic" value="$(arg odometry_topic)"/>
+    <arg name="fusion_start_topic" value="$(arg fusion_start_topic)"/>
+    <arg name="obstacle_topic" value="$(arg obstacle_topic)"/>
+    <arg name="visualization_frame" value="$(arg visualization_frame)"/>
+    <arg name="bspline_visualization_samples" value="$(arg bspline_visualization_samples)"/>
+    <arg name="acc_lpf_alpha" value="$(arg acc_lpf_alpha)"/>
+    <arg name="mpc_command_step" value="$(arg mpc_command_step)"/>
+    <arg name="convert_ned_to_position_cmd" value="$(arg convert_ned_to_position_cmd)"/>
+    <arg name="plan_waypoint_lookahead" value="$(arg plan_waypoint_lookahead)"/>
+    <arg name="replan_trigger_distance" value="$(arg replan_trigger_distance)"/>
+    <arg name="planning_failure_retry_interval" value="$(arg planning_failure_retry_interval)"/>
+    <arg name="bspline_control_point_spacing" value="$(arg bspline_control_point_spacing)"/>
+    <arg name="waypoint_reached_distance" value="$(arg waypoint_reached_distance)"/>
+    <arg name="use_waypoint_yaw" value="$(arg use_waypoint_yaw)"/>
+    <arg name="max_yaw_rate" value="$(arg max_yaw_rate)"/>
+    <arg name="segment_turnaround_enabled" value="$(arg segment_turnaround_enabled)"/>
+    <arg name="segment_turnaround_duration" value="$(arg segment_turnaround_duration)"/>
+    <arg name="segment_turnaround_yaw_delta" value="$(arg segment_turnaround_yaw_delta)"/>
+    <arg name="path_optimization_enabled" value="$(arg path_optimization_enabled)"/>
+    <arg name="path_optimization_iterations" value="$(arg path_optimization_iterations)"/>
+    <arg name="path_optimization_data_weight" value="$(arg path_optimization_data_weight)"/>
+    <arg name="path_optimization_smooth_weight" value="$(arg path_optimization_smooth_weight)"/>
+    <arg name="path_optimization_z_smooth_weight" value="$(arg path_optimization_z_smooth_weight)"/>
+    <arg name="path_optimization_max_deviation" value="$(arg path_optimization_max_deviation)"/>
+    <arg name="path_optimization_max_z_slope" value="$(arg path_optimization_max_z_slope)"/>
+    <arg name="path_optimization_min_turn_radius" value="$(arg path_optimization_min_turn_radius)"/>
+    <arg name="bspline_collision_check_enabled" value="$(arg bspline_collision_check_enabled)"/>
+    <arg name="bspline_collision_sample_step" value="$(arg bspline_collision_sample_step)"/>
+    <arg name="bspline_collision_extra_clearance" value="$(arg bspline_collision_extra_clearance)"/>
+    <arg name="dynamic_avoidance_enabled" value="$(arg dynamic_avoidance_enabled)"/>
+    <arg name="dynamic_avoidance_replan_period" value="$(arg dynamic_avoidance_replan_period)"/>
+    <arg name="dynamic_avoidance_obstacle_stale_time" value="$(arg dynamic_avoidance_obstacle_stale_time)"/>
+    <arg name="dynamic_avoidance_obstacle_history_time" value="$(arg dynamic_avoidance_obstacle_history_time)"/>
+    <arg name="dynamic_avoidance_obstacle_history_max_frames" value="$(arg dynamic_avoidance_obstacle_history_max_frames)"/>
+    <arg name="dynamic_avoidance_obstacle_merge_distance" value="$(arg dynamic_avoidance_obstacle_merge_distance)"/>
+    <arg name="dynamic_avoidance_immediate_replan_on_collision" value="$(arg dynamic_avoidance_immediate_replan_on_collision)"/>
+    <arg name="dynamic_avoidance_min_replan_interval" value="$(arg dynamic_avoidance_min_replan_interval)"/>
+    <arg name="dynamic_avoidance_obstacle_inflation" value="$(arg dynamic_avoidance_obstacle_inflation)"/>
+    <arg name="dynamic_avoidance_endpoint_clear_radius" value="$(arg dynamic_avoidance_endpoint_clear_radius)"/>
+    <arg name="dynamic_avoidance_clear_history_on_empty_frame" value="$(arg dynamic_avoidance_clear_history_on_empty_frame)"/>
+    <arg name="dynamic_avoidance_threat_confirm_frames" value="$(arg dynamic_avoidance_threat_confirm_frames)"/>
+    <arg name="dynamic_avoidance_threat_clear_frames" value="$(arg dynamic_avoidance_threat_clear_frames)"/>
+    <arg name="astar_max_search_nodes" value="$(arg astar_max_search_nodes)"/>
+    <arg name="fallback_max_speed" value="$(arg fallback_max_speed)"/>
+    <arg name="fallback_max_vertical_speed" value="$(arg fallback_max_vertical_speed)"/>
+    <arg name="startup_altitude_hold_enabled" value="$(arg startup_altitude_hold_enabled)"/>
+    <arg name="startup_altitude_hold_distance" value="$(arg startup_altitude_hold_distance)"/>
+    <arg name="startup_altitude_hold_margin" value="$(arg startup_altitude_hold_margin)"/>
+    <arg name="planning_recovery_enabled" value="$(arg planning_recovery_enabled)"/>
+    <arg name="planning_recovery_failure_threshold" value="$(arg planning_recovery_failure_threshold)"/>
+    <arg name="planning_recovery_step" value="$(arg planning_recovery_step)"/>
+    <arg name="planning_recovery_duration" value="$(arg planning_recovery_duration)"/>
+    <arg name="planning_recovery_reached_distance" value="$(arg planning_recovery_reached_distance)"/>
+    <arg name="planning_recovery_stuck_speed" value="$(arg planning_recovery_stuck_speed)"/>
+    <arg name="planning_recovery_allow_vertical" value="$(arg planning_recovery_allow_vertical)"/>
+    <arg name="mpc_N" value="$(arg mpc_N)"/>
+    <arg name="mpc_dt" value="$(arg mpc_dt)"/>
+    <arg name="mpc_max_jerk" value="$(arg mpc_max_jerk)"/>
+    <arg name="mpc_max_acc" value="$(arg mpc_max_acc)"/>
+    <arg name="mpc_max_vel" value="$(arg mpc_max_vel)"/>
+    <arg name="mpc_w_pos" value="$(arg mpc_w_pos)"/>
+    <arg name="mpc_w_vel" value="$(arg mpc_w_vel)"/>
+    <arg name="mpc_w_terminal_pos" value="$(arg mpc_w_terminal_pos)"/>
+    <arg name="mpc_w_jerk" value="$(arg mpc_w_jerk)"/>
+    <arg name="mpc_w_jerk_delta" value="$(arg mpc_w_jerk_delta)"/>
+    <arg name="mpc_obstacle_constraints_enabled" value="$(arg mpc_obstacle_constraints_enabled)"/>
+    <arg name="mpc_obstacle_safe_distance" value="$(arg mpc_obstacle_safe_distance)"/>
+    <arg name="mpc_obstacle_active_distance" value="$(arg mpc_obstacle_active_distance)"/>
+    <arg name="mpc_obstacle_max_count" value="$(arg mpc_obstacle_max_count)"/>
+    <arg name="mpc_obstacle_check_step" value="$(arg mpc_obstacle_check_step)"/>
+    <arg name="use_rviz" value="$(arg use_rviz)"/>
+  </include>
+</launch>

@@ -1,0 +1,165 @@
+<launch>
+  <arg name="plan_size_x_" default="200.0"/>
+  <arg name="plan_size_y_" default="200.0"/>
+  <arg name="plan_size_z_" default="100.0"/>
+  <arg name="resolution" default="0.3"/>
+  <arg name="reserved_back_space" default="10.0"/>
+  <arg name="safety_distance" default="0.6"/>
+  <arg name="h_weight" default="1.45"/>
+  <arg name="odometry_topic" default="/airsim_node/drone_1/drone_state"/>
+  <arg name="fusion_start_topic" default="/fusion_start"/>
+  <arg name="obstacle_topic" default="/front_fov_obstacles"/>
+  <arg name="visualization_frame" default="map_rviz"/>
+  <arg name="bspline_visualization_samples" default="500"/>
+  <arg name="acc_lpf_alpha" default="0.1"/>
+  <arg name="mpc_command_step" default="8"/>
+  <arg name="convert_ned_to_position_cmd" default="false"/>
+  <arg name="plan_waypoint_lookahead" default="4"/>
+  <arg name="replan_trigger_distance" default="45.0"/>
+  <arg name="planning_failure_retry_interval" default="0.25"/>
+  <arg name="bspline_control_point_spacing" default="2.0"/>
+  <arg name="waypoint_reached_distance" default="10.0"/>
+  <arg name="use_waypoint_yaw" default="true"/>
+  <arg name="max_yaw_rate" default="3.5"/>
+  <arg name="segment_turnaround_enabled" default="true"/>
+  <arg name="segment_turnaround_duration" default="5.0"/>
+  <arg name="segment_turnaround_yaw_delta" default="3.141592653589793"/>
+  <arg name="path_optimization_enabled" default="true"/>
+  <arg name="path_optimization_iterations" default="80"/>
+  <arg name="path_optimization_data_weight" default="0.20"/>
+  <arg name="path_optimization_smooth_weight" default="0.45"/>
+  <arg name="path_optimization_z_smooth_weight" default="0.45"/>
+  <arg name="path_optimization_max_deviation" default="2.0"/>
+  <arg name="path_optimization_max_z_slope" default="0.40"/>
+  <arg name="path_optimization_min_turn_radius" default="8.0"/>
+  <arg name="bspline_collision_check_enabled" default="true"/>
+  <arg name="bspline_collision_sample_step" default="0.2"/>
+  <arg name="bspline_collision_extra_clearance" default="0.15"/>
+  <arg name="dynamic_avoidance_enabled" default="true"/>
+  <arg name="dynamic_avoidance_replan_period" default="0.6"/>
+  <arg name="dynamic_avoidance_obstacle_stale_time" default="0.35"/>
+  <arg name="dynamic_avoidance_obstacle_history_time" default="0.6"/>
+  <arg name="dynamic_avoidance_obstacle_history_max_frames" default="3"/>
+  <arg name="dynamic_avoidance_obstacle_merge_distance" default="0.8"/>
+  <arg name="dynamic_avoidance_immediate_replan_on_collision" default="true"/>
+  <arg name="dynamic_avoidance_min_replan_interval" default="0.4"/>
+  <arg name="dynamic_avoidance_obstacle_inflation" default="0.8"/>
+  <arg name="dynamic_avoidance_endpoint_clear_radius" default="3.0"/>
+  <arg name="dynamic_avoidance_clear_history_on_empty_frame" default="true"/>
+  <arg name="dynamic_avoidance_threat_confirm_frames" default="2"/>
+  <arg name="dynamic_avoidance_threat_clear_frames" default="3"/>
+  <arg name="astar_max_search_nodes" default="500000"/>
+  <arg name="fallback_max_speed" default="8.0"/>
+  <arg name="fallback_max_vertical_speed" default="3.0"/>
+  <arg name="startup_altitude_hold_enabled" default="true"/>
+  <arg name="startup_altitude_hold_distance" default="8.0"/>
+  <arg name="startup_altitude_hold_margin" default="0.3"/>
+  <arg name="planning_recovery_enabled" default="true"/>
+  <arg name="planning_recovery_failure_threshold" default="2"/>
+  <arg name="planning_recovery_step" default="0.5"/>
+  <arg name="planning_recovery_duration" default="1.5"/>
+  <arg name="planning_recovery_reached_distance" default="0.2"/>
+  <arg name="planning_recovery_stuck_speed" default="0.5"/>
+  <arg name="planning_recovery_allow_vertical" default="false"/>
+  <arg name="mpc_N" default="60"/>
+  <arg name="mpc_dt" default="0.02"/>
+  <arg name="mpc_max_jerk" default="35.0"/>
+  <arg name="mpc_max_acc" default="8.0"/>
+  <arg name="mpc_max_vel" default="15.0"/>
+  <arg name="mpc_w_pos" default="45.0"/>
+  <arg name="mpc_w_vel" default="8.0"/>
+  <arg name="mpc_w_terminal_pos" default="60.0"/>
+  <arg name="mpc_w_jerk" default="0.15"/>
+  <arg name="mpc_w_jerk_delta" default="0.08"/>
+  <arg name="mpc_obstacle_constraints_enabled" default="true"/>
+  <arg name="mpc_obstacle_safe_distance" default="1.4"/>
+  <arg name="mpc_obstacle_active_distance" default="12.0"/>
+  <arg name="mpc_obstacle_max_count" default="5"/>
+  <arg name="mpc_obstacle_check_step" default="5"/>
+  <arg name="use_rviz" default="false"/>
+
+  <!-- main node -->
+  <node pkg="AB_planner" name="AB_planner" type="AB_planner_node" output="screen">
+
+    <param name="plan_size_x" value="$(arg plan_size_x_)" type="double"/>
+    <param name="plan_size_y" value="$(arg plan_size_y_)" type="double"/>
+    <param name="plan_size_z" value="$(arg plan_size_z_)" type="double"/>
+    <param name="resolution" value="$(arg resolution)" type="double"/>
+    <param name="reserved_back_space" value="$(arg reserved_back_space)" type="double"/>
+    <param name="safety_distance" value="$(arg safety_distance)" type="double"/>
+    <param name="h_weight" value="$(arg h_weight)" type="double"/>
+    <param name="odometry_topic" value="$(arg odometry_topic)" type="string"/>
+    <param name="fusion_start_topic" value="$(arg fusion_start_topic)" type="string"/>
+    <param name="obstacle_topic" value="$(arg obstacle_topic)" type="string"/>
+    <param name="visualization_frame" value="$(arg visualization_frame)" type="string"/>
+    <param name="bspline_visualization_samples" value="$(arg bspline_visualization_samples)" type="int"/>
+    <param name="acc_lpf_alpha" value="$(arg acc_lpf_alpha)" type="double"/>
+    <param name="mpc/command_step" value="$(arg mpc_command_step)" type="int"/>
+    <param name="convert_ned_to_position_cmd" value="$(arg convert_ned_to_position_cmd)" type="bool"/>
+    <param name="plan_waypoint_lookahead" value="$(arg plan_waypoint_lookahead)" type="int"/>
+    <param name="replan_trigger_distance" value="$(arg replan_trigger_distance)" type="double"/>
+    <param name="planning_failure_retry_interval" value="$(arg planning_failure_retry_interval)" type="double"/>
+    <param name="bspline_control_point_spacing" value="$(arg bspline_control_point_spacing)" type="double"/>
+    <param name="waypoint_reached_distance" value="$(arg waypoint_reached_distance)" type="double"/>
+    <param name="use_waypoint_yaw" value="$(arg use_waypoint_yaw)" type="bool"/>
+    <param name="max_yaw_rate" value="$(arg max_yaw_rate)" type="double"/>
+    <param name="segment_turnaround/enabled" value="$(arg segment_turnaround_enabled)" type="bool"/>
+    <param name="segment_turnaround/duration" value="$(arg segment_turnaround_duration)" type="double"/>
+    <param name="segment_turnaround/yaw_delta" value="$(arg segment_turnaround_yaw_delta)" type="double"/>
+    <param name="path_optimization/enabled" value="$(arg path_optimization_enabled)" type="bool"/>
+    <param name="path_optimization/iterations" value="$(arg path_optimization_iterations)" type="int"/>
+    <param name="path_optimization/data_weight" value="$(arg path_optimization_data_weight)" type="double"/>
+    <param name="path_optimization/smooth_weight" value="$(arg path_optimization_smooth_weight)" type="double"/>
+    <param name="path_optimization/z_smooth_weight" value="$(arg path_optimization_z_smooth_weight)" type="double"/>
+    <param name="path_optimization/max_deviation" value="$(arg path_optimization_max_deviation)" type="double"/>
+    <param name="path_optimization/max_z_slope" value="$(arg path_optimization_max_z_slope)" type="double"/>
+    <param name="path_optimization/min_turn_radius" value="$(arg path_optimization_min_turn_radius)" type="double"/>
+    <param name="bspline_collision_check/enabled" value="$(arg bspline_collision_check_enabled)" type="bool"/>
+    <param name="bspline_collision_check/sample_step" value="$(arg bspline_collision_sample_step)" type="double"/>
+    <param name="bspline_collision_check/extra_clearance" value="$(arg bspline_collision_extra_clearance)" type="double"/>
+    <param name="dynamic_avoidance/enabled" value="$(arg dynamic_avoidance_enabled)" type="bool"/>
+    <param name="dynamic_avoidance/replan_period" value="$(arg dynamic_avoidance_replan_period)" type="double"/>
+    <param name="dynamic_avoidance/obstacle_stale_time" value="$(arg dynamic_avoidance_obstacle_stale_time)" type="double"/>
+    <param name="dynamic_avoidance/obstacle_history_time" value="$(arg dynamic_avoidance_obstacle_history_time)" type="double"/>
+    <param name="dynamic_avoidance/obstacle_history_max_frames" value="$(arg dynamic_avoidance_obstacle_history_max_frames)" type="int"/>
+    <param name="dynamic_avoidance/obstacle_merge_distance" value="$(arg dynamic_avoidance_obstacle_merge_distance)" type="double"/>
+    <param name="dynamic_avoidance/immediate_replan_on_collision" value="$(arg dynamic_avoidance_immediate_replan_on_collision)" type="bool"/>
+    <param name="dynamic_avoidance/min_replan_interval" value="$(arg dynamic_avoidance_min_replan_interval)" type="double"/>
+    <param name="dynamic_avoidance/obstacle_inflation" value="$(arg dynamic_avoidance_obstacle_inflation)" type="double"/>
+    <param name="dynamic_avoidance/endpoint_clear_radius" value="$(arg dynamic_avoidance_endpoint_clear_radius)" type="double"/>
+    <param name="dynamic_avoidance/clear_history_on_empty_frame" value="$(arg dynamic_avoidance_clear_history_on_empty_frame)" type="bool"/>
+    <param name="dynamic_avoidance/threat_confirm_frames" value="$(arg dynamic_avoidance_threat_confirm_frames)" type="int"/>
+    <param name="dynamic_avoidance/threat_clear_frames" value="$(arg dynamic_avoidance_threat_clear_frames)" type="int"/>
+    <param name="astar/max_search_nodes" value="$(arg astar_max_search_nodes)" type="int"/>
+    <param name="fallback/max_speed" value="$(arg fallback_max_speed)" type="double"/>
+    <param name="fallback/max_vertical_speed" value="$(arg fallback_max_vertical_speed)" type="double"/>
+    <param name="startup_altitude_hold/enabled" value="$(arg startup_altitude_hold_enabled)" type="bool"/>
+    <param name="startup_altitude_hold/distance" value="$(arg startup_altitude_hold_distance)" type="double"/>
+    <param name="startup_altitude_hold/margin" value="$(arg startup_altitude_hold_margin)" type="double"/>
+    <param name="planning_recovery/enabled" value="$(arg planning_recovery_enabled)" type="bool"/>
+    <param name="planning_recovery/failure_threshold" value="$(arg planning_recovery_failure_threshold)" type="int"/>
+    <param name="planning_recovery/step" value="$(arg planning_recovery_step)" type="double"/>
+    <param name="planning_recovery/duration" value="$(arg planning_recovery_duration)" type="double"/>
+    <param name="planning_recovery/reached_distance" value="$(arg planning_recovery_reached_distance)" type="double"/>
+    <param name="planning_recovery/stuck_speed" value="$(arg planning_recovery_stuck_speed)" type="double"/>
+    <param name="planning_recovery/allow_vertical" value="$(arg planning_recovery_allow_vertical)" type="bool"/>
+    <param name="mpc/N" value="$(arg mpc_N)" type="int"/>
+    <param name="mpc/dt" value="$(arg mpc_dt)" type="double"/>
+    <param name="mpc/max_jerk" value="$(arg mpc_max_jerk)" type="double"/>
+    <param name="mpc/max_acc" value="$(arg mpc_max_acc)" type="double"/>
+    <param name="mpc/max_vel" value="$(arg mpc_max_vel)" type="double"/>
+    <param name="mpc/w_pos" value="$(arg mpc_w_pos)" type="double"/>
+    <param name="mpc/w_vel" value="$(arg mpc_w_vel)" type="double"/>
+    <param name="mpc/w_terminal_pos" value="$(arg mpc_w_terminal_pos)" type="double"/>
+    <param name="mpc/w_jerk" value="$(arg mpc_w_jerk)" type="double"/>
+    <param name="mpc/w_jerk_delta" value="$(arg mpc_w_jerk_delta)" type="double"/>
+    <param name="mpc/obstacle_constraints_enabled" value="$(arg mpc_obstacle_constraints_enabled)" type="bool"/>
+    <param name="mpc/obstacle_safe_distance" value="$(arg mpc_obstacle_safe_distance)" type="double"/>
+    <param name="mpc/obstacle_active_distance" value="$(arg mpc_obstacle_active_distance)" type="double"/>
+    <param name="mpc/obstacle_max_count" value="$(arg mpc_obstacle_max_count)" type="int"/>
+    <param name="mpc/obstacle_check_step" value="$(arg mpc_obstacle_check_step)" type="int"/>
+    <param name="use_rviz" value="$(arg use_rviz)" type="bool"/>
+
+  </node>
+
+</launch>

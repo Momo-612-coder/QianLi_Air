@@ -1,0 +1,99 @@
+<launch>
+  <arg name="enable_sim_time" default="true"/>
+  <arg name="use_rviz" default="false"/>
+
+  <arg name="target_frame" default="map"/>
+  <arg name="source_frame_override" default="lidar_link"/>
+  <arg name="front_fov_deg" default="90.0"/>
+  <arg name="front_fov_margin_deg" default="8.0"/>
+  <arg name="vertical_fov_deg" default="90.0"/>
+  <arg name="vertical_fov_margin_deg" default="5.0"/>
+
+  <arg name="fov_prefilter_enabled" default="true"/>
+  <arg name="fov_prefilter_deg" default="120.0"/>
+
+  <!-- 点云处理参数 --> 
+  <!-- 体素滤波参数 --> 
+  <arg name="voxel_leaf_size" default="0.08"/>
+  <!-- 统计滤波参数 -->
+  <arg name="statistical_mean_k" default="50"/>
+  <arg name="statistical_stddev_mul_thresh" default="1.0"/>
+  <!-- 平面分割 (移除地面)参数 -->
+  <arg name="plane_segmentation/distance_threshold" default="0.05"/>
+
+  <arg name="cluster_seg0_tolerance" default="0.10"/>
+  <arg name="cluster_seg0_min_size" default="100"/>
+  <arg name="cluster_seg0_max_size" default="2000"/>
+  <arg name="cluster_seg1_tolerance" default="0.20"/>
+  <arg name="cluster_seg1_min_size" default="200"/>
+  <arg name="cluster_seg1_max_size" default="3000"/>
+  <arg name="cluster_seg2_tolerance" default="0.40"/>
+  <arg name="cluster_seg2_min_size" default="300"/>
+  <arg name="cluster_seg2_max_size" default="8000"/>
+  <arg name="cluster_seg3_tolerance" default="0.80"/>
+  <arg name="cluster_seg3_min_size" default="400"/>
+  <arg name="cluster_seg3_max_size" default="12000"/>
+  <arg name="cluster_seg4_tolerance" default="1.20"/>
+  <arg name="cluster_seg4_min_size" default="500"/>
+  <arg name="cluster_seg4_max_size" default="12000"/>
+
+  <arg name="use_imu_clock_time" default="true"/>
+  <arg name="drop_lidar_until_clock" default="true"/>
+  <arg name="max_lidar_imu_stamp_skew" default="0.03"/>
+
+  <arg name="object_filter_min_extent" default="0.05"/>
+  <arg name="object_filter_min_height" default="0.05"/>
+  <arg name="object_filter_max_length" default="12.0"/>
+  <arg name="object_filter_max_width" default="12.0"/>
+  <arg name="object_filter_max_height" default="8.0"/>
+  <arg name="object_filter_max_volume" default="25.0"/>
+
+  <arg name="temporal_smoothing_enabled" default="true"/>
+  <arg name="temporal_smoothing_alpha" default="0.65"/>
+  <arg name="temporal_smoothing_max_match_distance" default="1.8"/>
+
+  <param name="/use_sim_time" value="$(arg enable_sim_time)"/>
+
+  <node pkg="lidar_solver" type="lidar_solver" name="lidar_solver" output="screen">
+    <param name="use_rviz" value="$(arg use_rviz)" type="bool"/>
+    <param name="target_frame" value="$(arg target_frame)" type="string"/>
+    <param name="source_frame_override" value="$(arg source_frame_override)" type="string"/>
+    <param name="front_fov_deg" value="$(arg front_fov_deg)" type="double"/>
+    <param name="front_fov_margin_deg" value="$(arg front_fov_margin_deg)" type="double"/>
+
+    <param name="fov_prefilter/enabled" value="$(arg fov_prefilter_enabled)" type="bool"/>
+    <param name="fov_prefilter/deg" value="$(arg fov_prefilter_deg)" type="double"/>
+    <param name="voxel_grid/leaf_size" value="$(arg voxel_leaf_size)" type="double"/>
+
+    <param name="cluster/seg0/tolerance" value="$(arg cluster_seg0_tolerance)" type="double"/>
+    <param name="cluster/seg0/min_size" value="$(arg cluster_seg0_min_size)" type="int"/>
+    <param name="cluster/seg0/max_size" value="$(arg cluster_seg0_max_size)" type="int"/>
+    <param name="cluster/seg1/tolerance" value="$(arg cluster_seg1_tolerance)" type="double"/>
+    <param name="cluster/seg1/min_size" value="$(arg cluster_seg1_min_size)" type="int"/>
+    <param name="cluster/seg1/max_size" value="$(arg cluster_seg1_max_size)" type="int"/>
+    <param name="cluster/seg2/tolerance" value="$(arg cluster_seg2_tolerance)" type="double"/>
+    <param name="cluster/seg2/min_size" value="$(arg cluster_seg2_min_size)" type="int"/>
+    <param name="cluster/seg2/max_size" value="$(arg cluster_seg2_max_size)" type="int"/>
+    <param name="cluster/seg3/tolerance" value="$(arg cluster_seg3_tolerance)" type="double"/>
+    <param name="cluster/seg3/min_size" value="$(arg cluster_seg3_min_size)" type="int"/>
+    <param name="cluster/seg3/max_size" value="$(arg cluster_seg3_max_size)" type="int"/>
+    <param name="cluster/seg4/tolerance" value="$(arg cluster_seg4_tolerance)" type="double"/>
+    <param name="cluster/seg4/min_size" value="$(arg cluster_seg4_min_size)" type="int"/>
+    <param name="cluster/seg4/max_size" value="$(arg cluster_seg4_max_size)" type="int"/>
+
+    <param name="use_imu_clock_time" value="$(arg use_imu_clock_time)" type="bool"/>
+    <param name="drop_lidar_until_clock" value="$(arg drop_lidar_until_clock)" type="bool"/>
+    <param name="max_lidar_imu_stamp_skew" value="$(arg max_lidar_imu_stamp_skew)" type="double"/>
+
+    <param name="object_filter/min_extent" value="$(arg object_filter_min_extent)" type="double"/>
+    <param name="object_filter/min_height" value="$(arg object_filter_min_height)" type="double"/>
+    <param name="object_filter/max_length" value="$(arg object_filter_max_length)" type="double"/>
+    <param name="object_filter/max_width" value="$(arg object_filter_max_width)" type="double"/>
+    <param name="object_filter/max_height" value="$(arg object_filter_max_height)" type="double"/>
+    <param name="object_filter/max_volume" value="$(arg object_filter_max_volume)" type="double"/>
+
+    <param name="temporal_smoothing/enabled" value="$(arg temporal_smoothing_enabled)" type="bool"/>
+    <param name="temporal_smoothing/alpha" value="$(arg temporal_smoothing_alpha)" type="double"/>
+    <param name="temporal_smoothing/max_match_distance" value="$(arg temporal_smoothing_max_match_distance)" type="double"/>
+  </node>
+</launch>

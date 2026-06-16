@@ -1,0 +1,55 @@
+<launch>
+    <arg name="map_size_x" value="780.0"/>
+    <arg name="map_size_y" value="720.0"/>
+    <arg name="map_size_z" value="150.0"/>
+    <arg name="use_rviz" default="false"/>
+
+    <!-- <arg name="odom_topic" value="aft_mapped_to_init"/> -->
+    <arg name="odom_topic" value="odom_up"/>
+    <arg name="cloud_topic" value="/airsim_node/drone_1/lidar_odom"/> 
+
+    <!-- <node pkg="pcl_ros" type="pcd_to_pointcloud" name="pcd_to_pointcloud" args="/basic_dev/src/Point-LIO/maps/sampled.pcd 0.1" output="screen">
+        <remap from="cloud_pcd" to="/$(arg cloud_topic)" />
+        <param name="frame_id" value="camera_init" /> 
+    </node> -->
+
+    <include file="$(find ego_planner)/launch/qianli_param.xml">
+        <arg name="drone_id" value="0"/>
+        <arg name="map_size_x_" value="$(arg map_size_x)"/>
+        <arg name="map_size_y_" value="$(arg map_size_y)"/>
+        <arg name="map_size_z_" value="$(arg map_size_z)"/>
+        <arg name="map_origin_x" value="-20.0"/>
+        <arg name="map_origin_y" value="-550.0"/>
+        <arg name="map_origin_z" value="-5.0"/>
+        <arg name="odometry_topic" value="$(arg odom_topic)"/>
+
+        <arg name="cloud_topic" value="$(arg cloud_topic)"/>
+
+        <arg name="max_vel" value="10.0" />
+        <arg name="max_acc" value="6.0" />
+        <arg name="planning_horizon" value="15.0" />
+        <arg name="use_distinctive_trajs" value="true" />
+
+        <!-- <arg 10 4 12 || 15 6 25 || 20 8 23 /> -->
+        <!-- <arg planning_horizon = 1.5 ~ 2.0 * v_max² / (2 * a_max) /> -->
+
+        <arg name="flight_type" value="2" />
+        
+        <arg name="point_num" value="1" />
+        <arg name="point0_x" value="10.0" />
+        <arg name="point0_y" value="0.0" />
+        <arg name="point0_z" value="1.0" />
+    </include>
+
+    <node pkg="ego_planner" name="drone_0_traj_server" type="traj_server" output="screen">
+        <remap from="/position_cmd" to="drone_0_planning/pos_cmd"/>
+        <remap from="/waypoint_cmd" to="drone_0_planning/waypoint_cmd"/>
+        <remap from="~planning/bspline" to="drone_0_planning/bspline"/>
+        <remap from="~planning/yaw_turn_180" to="/drone_0_planning/yaw_turn_180"/>
+        <param name="traj_server/time_forward" value="1.0" type="double"/>
+        <param name="traj_server/yaw_rotate_duration" value="2.0" type="double"/>
+    </node>
+
+    <include if="$(arg use_rviz)" file="$(find ego_planner)/launch/qianli_rviz.launch"/>
+
+    </launch>

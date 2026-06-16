@@ -1,0 +1,39 @@
+<launch>
+  <arg name="node_name" default="scp_mpc_trajectory" />
+  <arg name="output" default="screen" />
+
+  <arg name="N" default="50" />
+  <arg name="dt" default="0.02" />
+  <arg name="max_vel" default="10.0" />
+  <arg name="max_acc" default="6.0" />
+  <arg name="max_jerk" default="25.0" />
+  <arg name="w_pos" default="50.0" />
+  <arg name="w_terminal_pos" default="200.0" />
+  <arg name="w_jerk" default="0.1" />
+  <arg name="w_jerk_delta" default="0.05" />
+  <arg name="command_step" default="5" />
+  <arg name="acc_lpf_alpha" default="0.35" />
+
+  <arg name="bspline_topic" default="/drone_0_planning/bspline" />
+  <arg name="cmd_topic" default="mpc_pose_cmd" />
+
+  <node pkg="scp_mpc_trajectory"
+        type="scp_mpc_trajectory"
+        name="$(arg node_name)"
+        output="$(arg output)">
+    <param name="N" value="$(arg N)" />
+    <param name="dt" value="$(arg dt)" />
+    <param name="max_vel" value="$(arg max_vel)" />
+    <param name="max_acc" value="$(arg max_acc)" />
+    <param name="max_jerk" value="$(arg max_jerk)" />
+    <param name="w_pos" value="$(arg w_pos)" />
+    <param name="w_terminal_pos" value="$(arg w_terminal_pos)" />
+    <param name="w_jerk" value="$(arg w_jerk)" />
+    <param name="w_jerk_delta" value="$(arg w_jerk_delta)" />
+    <param name="command_step" value="$(arg command_step)" />
+    <param name="acc_lpf_alpha" value="$(arg acc_lpf_alpha)" />
+
+    <param name="bspline_topic" value="$(arg bspline_topic)" />
+    <param name="cmd_topic" value="$(arg cmd_topic)" />
+  </node>
+</launch>

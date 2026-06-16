@@ -1,0 +1,43 @@
+<launch>
+  <arg name="use_rviz" default="true" />
+  <arg name="rviz_config" default="$(find my_orb_slam)/rviz/my_orb_slam_image_debug.rviz" />
+  <arg name="use_orbslam3" default="false" />
+  <arg name="use_stereo_inertial" default="false" />
+  <arg name="vocabulary_path" default="" />
+  <arg name="settings_path"   default="$(find my_orb_slam)/config/airsim_stereo.yaml" />
+  <arg name="enable_dynamic_avoidance" default="true" />
+  <arg name="enable_autonomy_cmd" default="true" />
+  <arg name="enable_vo_static_lock" default="true" />
+  <arg name="vo_min_inliers" default="80" />
+  <arg name="vo_static_trans_thresh_m" default="0.0015" />
+  <arg name="vo_static_rot_thresh_deg" default="0.06" />
+  <arg name="vo_static_max_pixel_shift" default="0.75" />
+  <arg name="vo_static_min_inlier_ratio" default="0.6" />
+
+  <node pkg="my_orb_slam"
+        type="my_orb_slam"
+        name="my_orb_slam"
+        output="screen">
+    <param name="my_orb_slam/use_orbslam3" value="$(arg use_orbslam3)" />
+    <param name="my_orb_slam/use_stereo_inertial" value="$(arg use_stereo_inertial)" />
+    <param name="my_orb_slam/vocabulary_path" value="$(arg vocabulary_path)" />
+    <param name="my_orb_slam/settings_path" value="$(arg settings_path)" />
+    <param name="my_orb_slam/enable_dynamic_avoidance" value="$(arg enable_dynamic_avoidance)" />
+    <param name="my_orb_slam/enable_autonomy_cmd" value="$(arg enable_autonomy_cmd)" />
+    <param name="my_orb_slam/enable_vo_static_lock" value="$(arg enable_vo_static_lock)" />
+    <param name="my_orb_slam/vo_min_inliers" value="$(arg vo_min_inliers)" />
+    <param name="my_orb_slam/vo_static_trans_thresh_m" value="$(arg vo_static_trans_thresh_m)" />
+    <param name="my_orb_slam/vo_static_rot_thresh_deg" value="$(arg vo_static_rot_thresh_deg)" />
+    <param name="my_orb_slam/vo_static_max_pixel_shift" value="$(arg vo_static_max_pixel_shift)" />
+    <param name="my_orb_slam/vo_static_min_inlier_ratio" value="$(arg vo_static_min_inlier_ratio)" />
+  </node>
+
+  <node if="$(arg use_rviz)"
+        pkg="rviz"
+        type="rviz"
+        name="my_orb_slam_rviz"
+        args="-d $(arg rviz_config)"
+      output="screen">
+    <env name="LIBGL_ALWAYS_SOFTWARE" value="1"/>
+  </node>
+</launch>

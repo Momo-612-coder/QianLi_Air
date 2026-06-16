@@ -1,0 +1,36 @@
+<launch>
+  <arg name="input_topic" default="/airsim_node/drone_1/lidar" />
+  <arg name="output_topic" default="/livox/lidar" />
+  <!-- 修改参数名和默认值 -->
+  <arg name="output_odom_topic" default="/airsim_node/drone_1/lidar_odom" />
+  <arg name="scan_period" default="0.1" />
+  <arg name="filter_enable" default="true" />
+  <arg name="filter_min_range" default="0.8" />
+  <arg name="filter_max_range" default="24.0" />
+  <arg name="filter_voxel_leaf_size" default="0.4" />
+  <arg name="filter_radius_search" default="1.0" />
+  <arg name="filter_min_neighbors" default="2" />
+  <arg name="filter_log_stats" default="true" />
+
+  <node pkg="pointcloud2_to_livox"
+        type="pointcloud2_to_livox_node"
+        name="pointcloud2_to_livox"
+        output="screen">
+    <param name="input_topic" value="$(arg input_topic)" />
+    <param name="output_topic" value="$(arg output_topic)" />
+    <!-- 传入重命名后的参数 -->
+    <param name="output_odom_topic" value="$(arg output_odom_topic)" />
+    <param name="scan_period" value="$(arg scan_period)" />
+    <param name="queue_size" value="10" />
+    <param name="default_line" value="0" />
+    <param name="default_tag" value="16" />
+    <param name="lidar_id" value="1" />
+    <param name="filter/enable" value="$(arg filter_enable)" />
+    <param name="filter/min_range" value="$(arg filter_min_range)" />
+    <param name="filter/max_range" value="$(arg filter_max_range)" />
+    <param name="filter/voxel_leaf_size" value="$(arg filter_voxel_leaf_size)" />
+    <param name="filter/radius_search" value="$(arg filter_radius_search)" />
+    <param name="filter/min_neighbors" value="$(arg filter_min_neighbors)" />
+    <param name="filter/log_stats" value="$(arg filter_log_stats)" />
+  </node>
+</launch>

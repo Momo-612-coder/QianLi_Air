@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 坐标系以NED为准，x轴指向前方，y轴指向右侧，z轴指向下方 -->
+
+<robot name="drone">
+
+<!-- The base_link frame is the main reference frame for the robot. It is a fixed frame that represents the robot's body and is used as the parent frame for all other frames. The base_link frame is typically located at the center of the robot's body and is used as the reference point for all sensor measurements and control commands. -->
+  <link name="base_link" />
+
+  <link name="front_left_camera_link" /> 
+
+  <joint name="front_left_camera_link_joint" type="fixed">
+    <origin xyz="0.175 -0.150  0.000" rpy="0.0  0.0  0.0" />
+    <parent link="base_link" />
+    <child link="front_left_camera_link" />
+  </joint>
+
+  <link name="front_left_camera_optical_link" />
+
+  <joint name="front_left_camera_optical_joint" type="fixed">
+    <origin xyz="0.0 0.0 0.0" rpy="1.57079632679 0.0 1.57079632679" />
+    <parent link="front_left_camera_link" />
+    <child link="front_left_camera_optical_link" />
+  </joint>
+
+  <link name="front_right_camera_link" />
+
+  <joint name="front_right_camera_link_joint" type="fixed">
+    <origin xyz="0.175 0.150  0.000" rpy="0.0  0.0  0.0" />
+    <parent link="base_link" />
+    <child link="front_right_camera_link" />
+  </joint>
+
+  <link name="front_right_camera_optical_link" />
+
+  <joint name="front_right_camera_optical_joint" type="fixed">
+    <origin xyz="0.0 0.0 0.0" rpy="1.57079632679 0.0 1.57079632679" />
+    <parent link="front_right_camera_link" />
+    <child link="front_right_camera_optical_link" />
+  </joint>
+
+  <link name="back_left_camera_link" />
+
+  <joint name="back_left_camera_link_joint" type="fixed">
+    <origin xyz="-0.175 -0.150  0.000" rpy="0.0  0.0  0.0" />
+    <parent link="base_link" />
+    <child link="back_left_camera_link" />
+  </joint>
+
+  <link name="back_right_camera_link" />
+
+  <joint name="back_right_camera_link_joint" type="fixed">
+    <origin xyz="-0.175 0.150  0.000" rpy="0.0  0.0  0.0" />
+    <parent link="base_link" />
+    <child link="back_right_camera_link" />
+  </joint>
+
+  <link name="lidar_link" />
+
+  <joint name="lidar_link_joint" type="fixed">
+    <origin xyz="0.000 0.000 -0.050" rpy="0.0  0.0  0.0" />
+    <parent link="base_link" />
+    <child link="lidar_link" />
+  </joint>
+
+</robot>
